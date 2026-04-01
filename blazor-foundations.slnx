@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="blazor-foundations/blazor-foundations.csproj" />
+  <Project Path="BlazorLearningLab.02.TodoApp/BlazorLearningLab.02.TodoApp.csproj" />
 </Solution>

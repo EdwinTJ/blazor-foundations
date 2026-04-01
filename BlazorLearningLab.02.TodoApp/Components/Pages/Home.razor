@@ -1,0 +1,92 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<h3>Todo App</h3>
+
+<div class="todo-container">
+
+    <div class="input-group">
+        <input placeholder="Enter a task..." @bind="newTaskText" />
+        <button @onclick="AddTask">Add</button>
+    </div>
+
+    <ul class="task-list">
+        <p>Total Tasks: @tasks.Count</p>
+        <br/>
+        <p>Completed Task: @tasks.Count(tasks => tasks.IsCompleted)</p>
+        @foreach (var task in tasks)
+        {
+            <li class="task-item">
+                <input type="checkbox" @bind="task.IsCompleted" />
+
+                <span class="@(task.IsCompleted ? "completed" : "")">
+                    @task.Text
+                </span>
+
+                <button @onclick="() => RemoveTask(task)">Delete</button>
+            </li>
+        }
+    </ul>
+
+</div>
+
+@code {
+    private string newTaskText = "";
+
+    private List<TodoItem> tasks = new();
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTaskText))
+        {
+            tasks.Add(new TodoItem
+            {
+                Text = newTaskText,
+                IsCompleted = false
+            });
+
+            newTaskText = "";
+        }
+    }
+
+    private void RemoveTask(TodoItem task)
+    {
+        tasks.Remove(task);
+    }
+
+    public class TodoItem
+    {
+        public string Text { get; set; } = "";
+        public bool IsCompleted { get; set; }
+    }
+}
+
+<style>
+    .todo-container {
+        max-width: 500px;
+        padding: 20px;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .task-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .task-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .completed {
+        text-decoration: line-through;
+        color: gray;
+    }
+</style>
