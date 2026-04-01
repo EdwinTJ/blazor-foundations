@@ -7,6 +7,7 @@
 
 <div class="counter-container">
     <p class="counter-value">Current Count: @currentCount</p>
+    <input type="number" @bind="step"/>
     <div class="button-group">
         <button @onclick="Increment">Increment</button>
         <button @onclick="Decrement">Decrement</button>
@@ -17,15 +18,19 @@
 
 @code{
     private int currentCount = 0;
+    private int step = 1;
 
     private void Increment()
     {
-        currentCount++;
+        currentCount += step;
     }
 
     private void Decrement()
     {
-        currentCount--;
+        if( currentCount > 0)
+        {
+            currentCount--;
+        }
     }
 
     private void Reset()
