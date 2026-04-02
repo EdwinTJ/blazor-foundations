@@ -1,0 +1,95 @@
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<PageTitle>Register</PageTitle>
+
+<h1>User Registration</h1>
+
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Name</label>
+        <InputText @bind-Value="user.Name" class="form-control" />
+        <ValidationMessage For="@(() => user.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <InputText @bind-Value="user.Email" class="form-control" />
+        <ValidationMessage For="@(() => user.Email)" />
+    </div>
+
+    <div class="form-group">
+        <label>Age</label>
+        <InputNumber @bind-Value="user.Age" class="form-control" />
+        <ValidationMessage For="@(() => user.Age)" />
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <InputText type="password" @bind-Value="user.Password" class="form-control" />
+        <ValidationMessage For="@(() => user.Password)" />
+    </div>
+
+    <button type="submit">Register</button>
+
+</EditForm>
+
+@if (isSubmitted)
+{
+    <p class="success">Registration Successful!</p>
+}
+
+@code {
+    private UserModel user = new();
+    private bool isSubmitted = false;
+
+    private void HandleValidSubmit()
+    {
+        isSubmitted = true;
+    }
+
+    public class UserModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        public string Email { get; set; } = "";
+
+        [Range(18, 100, ErrorMessage = "Age must be between 18 and 100")]
+        public int Age { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
+        public string Password { get; set; } = "";
+    }
+}
+
+<style>
+    .form-group {
+        margin-bottom: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-control {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 8px 12px;
+    }
+
+    .success {
+        color: green;
+        margin-top: 10px;
+    }
+</style>
