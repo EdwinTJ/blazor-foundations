@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="blazor-foundations/blazor-foundations.csproj" />
   <Project Path="BlazorLearningLab.02.TodoApp/BlazorLearningLab.02.TodoApp.csproj" />
+  <Project Path="BlazorLearningLab.03.Calculator/BlazorLearningLab.03.Calculator.csproj" Id="8313d5ee-e7f0-455a-96b1-cad13f424111" />
 </Solution>

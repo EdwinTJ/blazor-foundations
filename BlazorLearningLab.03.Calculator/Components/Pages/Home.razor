@@ -1,0 +1,120 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Calculator</PageTitle>
+
+<h1>Calculator Blazor</h1>
+
+
+<div class="calculator-container">
+
+    <div class="input-group">
+        <input type="number" @bind="number1" placeholder="First number" />
+        <input type="number" @bind="number2" placeholder="Second number" />
+    </div>
+
+    <div class="button-group">
+        <button @onclick="() => Calculate(1)">+</button>
+        <button @onclick="() => Calculate(2)">−</button>
+        <button @onclick="() => Calculate(3)">×</button>
+        <button @onclick="() => Calculate(4)">÷</button>
+        <button @onclick="Clear">Clear</button>
+    </div>
+
+    <div class="result">
+        <p>@number1 @selectedOperator @number2 = @result</p>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p class="error">@errorMessage</p>
+        }
+    </div>
+
+</div>
+
+@code {
+    private double number1;
+    private double number2;
+
+    private double result;
+    private string errorMessage = "";
+
+    private string selectedOperator = ""; 
+
+    private void Calculate(int operation)
+    {
+        errorMessage = "";
+
+        try
+        {
+            selectedOperator = operation switch
+            {
+                1 => "+",
+                2 => "-",
+                3 => "x",
+                4 => "/",
+                _ => ""
+            };
+
+            result = operation switch
+            {
+                1 => Add(number1, number2),
+                2 => Subtract(number1, number2),
+                3 => Multiply(number1, number2),
+                4 => Divide(number1, number2),
+                _ => 0
+            };
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+    private double Add(double a, double b) => a + b;
+
+    private double Subtract(double a, double b) => a - b;
+
+    private double Multiply(double a, double b) => a * b;
+
+    private double Divide(double a, double b)
+    {
+        if (b == 0)
+            throw new Exception("Cannot divide by zero.");
+
+        return a / b;
+    }
+
+    private void Clear()
+    {
+        number1 = 0;
+        number2 = 0;
+        result = 0;
+        errorMessage = "";
+    }
+}
+
+<style>
+    .calculator-container {
+        max-width: 400px;
+        padding: 20px;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .button-group button {
+        margin-right: 8px;
+        padding: 8px 12px;
+    }
+
+    .result {
+        margin-top: 15px;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
